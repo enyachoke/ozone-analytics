@@ -98,7 +98,7 @@ services:
 
   connect-setup:
     restart: on-failure
-    image: mekomsolutions/ozone-analytics-setup-connect:2.6.0
+    image: mekomsolutions/ozone-analytics-setup-connect
     networks:
       ozone-analytics:
     depends_on:
