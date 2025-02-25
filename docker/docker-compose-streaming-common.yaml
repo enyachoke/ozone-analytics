@@ -118,7 +118,7 @@ services:
     restart: unless-stopped
     image: mekomsolutions/ozone-flink-jobs:2.6.0
     ports:
-      - "8085:8081"
+      - "8084:8081"
       - "9250:9250"
     depends_on:
        analytics-migration:
