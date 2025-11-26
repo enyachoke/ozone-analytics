@@ -31,7 +31,7 @@ services:
       - "traefik.http.routers.minio.tls.certresolver=${MINIO_CERT_RESOLVER}"
       - "traefik.http.routers.minio.entrypoints=websecure"
       - "traefik.http.middlewares.minio-redirect-web-secure.redirectscheme.scheme=https"
-      - "traefik.http.routers.minio.middlewares=superset-redirect-web-secure"
+      - "traefik.http.routers.minio.middlewares=minio-redirect-web-secure"
       - "traefik.http.services.minio.loadbalancer.server.port=9000"
 
   minio-buckets:
