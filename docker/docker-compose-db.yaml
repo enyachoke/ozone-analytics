@@ -39,11 +39,16 @@ services:
       SUPERSET_DB: ${SUPERSET_DB}
       SUPERSET_DB_USER: ${SUPERSET_DB_USER}
       SUPERSET_DB_PASSWORD: ${SUPERSET_DB_PASSWORD}
+      # HAPI
+      HAPI_DB_NAME: ${HAPI_DB_NAME}
+      HAPI_DB_USER: ${HAPI_DB_USER}
+      HAPI_DB_PASSWORD: ${HAPI_DB_PASSWORD}
     volumes:
       - ${POSTGRES_DATADIR:-postgresql-data}:/var/lib/postgresql/data
-      - "${SQL_SCRIPTS_PATH}/postgresql/create_db.sh:/docker-entrypoint-initdb.d/create_db.sh"
-      - "${SQL_SCRIPTS_PATH}/postgresql/analytics:/docker-entrypoint-initdb.d/db/analytics"
-      - "${SQL_SCRIPTS_PATH}/postgresql/superset:/docker-entrypoint-initdb.d/db/superset"
+      - "${SQL_SCRIPTS_PATH:-./sqls}/postgresql/create_db.sh:/docker-entrypoint-initdb.d/create_db.sh"
+      - "${SQL_SCRIPTS_PATH:-./sqls}/postgresql/analytics:/docker-entrypoint-initdb.d/db/analytics"
+      - "${SQL_SCRIPTS_PATH:-./sqls}/postgresql/superset:/docker-entrypoint-initdb.d/db/superset"
+      - "${SQL_SCRIPTS_PATH:-./sqls}/postgresql/hapi:/docker-entrypoint-initdb.d/db/hapi"
 volumes:
    mysql-data:
    postgresql-data: ~

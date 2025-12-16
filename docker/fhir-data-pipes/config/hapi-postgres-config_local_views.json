@@ -1,0 +1,9 @@
+{
+  "jdbcDriverClass": "org.postgresql.Driver",
+  "databaseService" : "postgresql",
+  "databaseHostName" : "${ANALYTICS_DB_HOST:-postgresql}",
+  "databasePort" : "${ANALYTICS_DB_PORT:-5432}",
+  "databaseUser" : "${ANALYTICS_DB_USER:-analytics}",
+  "databasePassword" : "${ANALYTICS_DB_PASSWORD:-password}",
+  "databaseName" : "${ANALYTICS_DB_NAME:-analytics}"
+}

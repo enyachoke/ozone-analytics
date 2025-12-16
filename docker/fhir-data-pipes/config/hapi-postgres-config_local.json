@@ -1,0 +1,9 @@
+{
+  "jdbcDriverClass": "org.postgresql.Driver",
+  "databaseService" : "postgresql",
+  "databaseHostName" : "${HAPI_DB_HOST:-hapi-fhir-db}",
+  "databasePort" : "${HAPI_DB_PORT:-5432}",
+  "databaseUser" : "${HAPI_DB_USER:-admin}",
+  "databasePassword" : "${HAPI_DB_PASSWORD:-admin}",
+  "databaseName" : "${HAPI_DB_NAME:-hapi}"
+}

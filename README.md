@@ -200,3 +200,30 @@ docker compose -f docker-compose-export.yaml up
 | Superset  | http://localhost:8088  | admin/password|
 | Minio   | http://localhost:9000   |minioadmin/minioadmin123|
 | Drill  |  http://localhost:8047 | |
+
+### Testing FHIR Data Pipes (locally)
+
+1) Start the stack
+
+```bash
+cd scripts
+./start-fhir-data-pipes.sh
+```
+
+2) Load sample FHIR data
+
+```bash
+git clone https://github.com/google/fhir-data-pipes
+cd fhir-data-pipes
+virtualenv -p python3.9 venv
+source venv/bin/activate
+pip3 install -r ./synthea-hiv/uploader/requirements.txt
+python3 ./synthea-hiv/uploader/main.py HAPI http://localhost:8093/fhir \
+	--input_dir ./synthea-hiv/sample_data --cores 8
+```
+
+3) Trigger pipelines and verify data
+
+- Open the controller UI: http://localhost:8092/ and click **Run Full Pipeline** (or **Run Incremental Pipeline**)
+- Check Superset via SQL Lab: http://localhost:8888/sqllab
+

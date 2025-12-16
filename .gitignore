@@ -256,3 +256,5 @@ docker/data/parquet/
 data/
 debezium-connect/
 scripts/distro
+docker/fhir-data-pipes/dwh
+
