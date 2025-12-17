@@ -14,4 +14,4 @@ function create_user_and_database() {
 EOSQL
 }
 
-create_user_and_database ${ANALYTICS_DB_NAME} ${ANALYTICS_DB_USER} ${ANALYTICS_DB_PASSWORD}
+create_user_and_database ${HAPI_DB_NAME} ${HAPI_DB_USER} ${HAPI_DB_PASSWORD}

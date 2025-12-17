@@ -1,0 +1,45 @@
+services:
+  pipeline-controller:
+    platform: linux/amd64
+    build:
+      context: ./fhir-data-pipes
+      args:
+        FHIR_PIPELINES_VERSION: ${FHIR_PIPELINES_VERSION:-latest}
+    image: mekomsolutions/fhir-data-pipes:${FHIR_PIPELINES_VERSION:-latest}
+    container_name: pipeline-controller
+    restart: on-failure
+    volumes:
+      - ${DWH_ROOT}:/dwh
+    environment:
+      - JAVA_OPTS=${JAVA_OPTS:-}
+      - FHIR_SERVER_URL=${FHIR_SERVER_URL:-http://hapi-server:8080/fhir}
+      - DWH_ROOT_PREFIX=${DWH_ROOT_PREFIX:-/dwh/controller_DWH}
+      - FHIR_RESOURCE_LIST=${FHIR_RESOURCE_LIST:-Patient,Observation,Practitioner,DiagnosticReport,ServiceRequest,Specimen,Task,Organization}
+      - NUM_THREADS=${NUM_THREADS:--1}
+      - AUTO_GENERATE_FLINK_CONFIG=${AUTO_GENERATE_FLINK_CONFIG:-true}
+      - WAIT_FOR_FHIR=${WAIT_FOR_FHIR:-true}
+      - WAIT_FOR_FHIR_TIMEOUT=${WAIT_FOR_FHIR_TIMEOUT:-300}
+      - WAIT_FOR_FHIR_INTERVAL=${WAIT_FOR_FHIR_INTERVAL:-5}
+      - WAIT_FOR_FHIR_INSECURE=${WAIT_FOR_FHIR_INSECURE:-true}
+      - ANALYTICS_DB_HOST=${ANALYTICS_DB_HOST:-postgresql}
+      - ANALYTICS_DB_PORT=${ANALYTICS_DB_PORT:-5432}
+      - ANALYTICS_DB_USER=${ANALYTICS_DB_USER:-analytics}
+      - ANALYTICS_DB_PASSWORD=${ANALYTICS_DB_PASSWORD:-password}
+      - ANALYTICS_DB_NAME=${ANALYTICS_DB_NAME:-analytics}
+      - HAPI_DB_HOST=${HAPI_DB_HOST:-hapi-fhir-db}
+      - HAPI_DB_PORT=${HAPI_DB_PORT:-5432}
+      - HAPI_DB_USER=${HAPI_DB_USER:-admin}
+      - HAPI_DB_PASSWORD=${HAPI_DB_PASSWORD:-admin}
+      - HAPI_DB_NAME=${HAPI_DB_NAME:-hapi}
+      - THRIFT_SERVER_HOST=${THRIFT_SERVER_HOST:-spark-thriftserver}
+      - THRIFT_SERVER_PORT=${THRIFT_SERVER_PORT:-10000}
+      - THRIFT_SERVER_USER=${THRIFT_SERVER_USER:-hive}
+      - THRIFT_SERVER_PASSWORD=${THRIFT_SERVER_PASSWORD:-}
+      - THRIFT_SERVER_DB=${THRIFT_SERVER_DB:-default}
+    ports:
+      - '8092:8080'
+    networks:
+      ozone-analytics:
+    depends_on:
+      hapi-server:
+        condition: service_started
