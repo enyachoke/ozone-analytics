@@ -23,7 +23,7 @@ fhirdata:
   # `hapi-server` is another docker example where a container with that name is
   # running on the same docker network.
   #fhirServerUrl: "http://172.17.0.1:8091/fhir"
-  fhirServerUrl: ${FHIR_SERVER_URL:-https://fhir.madagascar.uwdigi.org/fhir}
+  fhirServerUrl: ${FHIR_SERVER_URL}
   # dbConfig: "config/hapi-postgres-config_local.json"
   dwhRootPrefix: "${DWH_ROOT_PREFIX:-/dwh/controller_DWH}"
   generateParquetFiles: true
@@ -33,9 +33,9 @@ fhirdata:
   # There is no Questionnaire in our test FHIR server, but it is added to
   # prevent regression of https://github.com/google/fhir-data-pipes/issues/785.
   # TODO: add resource table creation to e2e tests.
-  resourceList: "${FHIR_RESOURCE_LIST:-Patient,Observation,Practitioner,DiagnosticReport,ServiceRequest,Specimen,Task,Organization}"
-  numThreads: ${NUM_THREADS:--1}
-  autoGenerateFlinkConfiguration: ${AUTO_GENERATE_FLINK_CONFIG:-true}
+  resourceList: "${FHIR_RESOURCE_LIST}"
+  numThreads: ${NUM_THREADS}
+  autoGenerateFlinkConfiguration: ${AUTO_GENERATE_FLINK_CONFIG}
   createHiveResourceTables: false
   thriftserverHiveConfig: "config/thriftserver-hive-config_local.json"
   hiveResourceViewsDir: "config/views"

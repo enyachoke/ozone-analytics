@@ -1,9 +1,9 @@
 {
   "jdbcDriverClass" : "org.apache.hive.jdbc.HiveDriver",
   "databaseService" : "hive2",
-  "databaseHostName" : "${THRIFT_SERVER_HOST:-spark-thriftserver}",
-  "databasePort" : "${THRIFT_SERVER_PORT:-10000}",
-  "databaseUser" : "${THRIFT_SERVER_USER:-hive}",
-  "databasePassword" : "${THRIFT_SERVER_PASSWORD:-}",
-  "databaseName" : "${THRIFT_SERVER_DB:-default}"
+  "databaseHostName" : "${THRIFT_SERVER_HOST}",
+  "databasePort" : "${THRIFT_SERVER_PORT}",
+  "databaseUser" : "${THRIFT_SERVER_USER}",
+  "databasePassword" : "${THRIFT_SERVER_PASSWORD}",
+  "databaseName" : "${THRIFT_SERVER_DB}"
 }
