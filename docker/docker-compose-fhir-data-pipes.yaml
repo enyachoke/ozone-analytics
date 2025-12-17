@@ -5,7 +5,6 @@ services:
       context: ./fhir-data-pipes
       args:
         FHIR_PIPELINES_VERSION: ${FHIR_PIPELINES_VERSION:-latest}
-    image: mekomsolutions/fhir-data-pipes:${FHIR_PIPELINES_VERSION:-latest}
     container_name: pipeline-controller
     restart: on-failure
     volumes:
