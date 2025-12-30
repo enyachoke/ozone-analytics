@@ -1,14 +1,15 @@
 services:
   pipeline-controller:
     platform: linux/amd64
+    # image: us-docker.pkg.dev/cloud-build-fhir/fhir-analytics/main:latest
     build:
       context: ./fhir-data-pipes
-      args:
-        FHIR_PIPELINES_VERSION: ${FHIR_PIPELINES_VERSION:-latest}
+      dockerfile: Dockerfile
     container_name: pipeline-controller
     restart: on-failure
     volumes:
       - ${DWH_ROOT}:/dwh
+      - ${DWH_VIEWS_PATH:-./fhir-data-pipes/views}:/views
     environment:
       - JAVA_OPTS=${JAVA_OPTS:-}
       - FHIR_SERVER_URL=${FHIR_SERVER_URL:-http://hapi-server:8080/fhir}
@@ -35,6 +36,9 @@ services:
       - THRIFT_SERVER_USER=${THRIFT_SERVER_USER:-hive}
       - THRIFT_SERVER_PASSWORD=${THRIFT_SERVER_PASSWORD:-}
       - THRIFT_SERVER_DB=${THRIFT_SERVER_DB:-default}
+      - FHIR_DATA_PIPES_INCREMENTAL_SCHEDULE=${FHIR_DATA_PIPES_INCREMENTAL_SCHEDULE:-0 * * * *}
+      - FHIR_DATA_PIPES_PURGE_SCHEDULE=${FHIR_DATA_PIPES_PURGE_SCHEDULE:-30 * * * *}
+      - FHIR_DATA_PIPES_NUM_OF_DWH_SNAPSHOTS_TO_RETAIN=${FHIR_DATA_PIPES_NUM_OF_DWH_SNAPSHOTS_TO_RETAIN:-2}
     ports:
       - '8092:8080'
     networks:
@@ -42,3 +46,5 @@ services:
     depends_on:
       hapi-server:
         condition: service_started
+volumes:
+  spark_vol_single:
