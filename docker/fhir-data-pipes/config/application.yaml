@@ -23,28 +23,25 @@ fhirdata:
   # `hapi-server` is another docker example where a container with that name is
   # running on the same docker network.
   #fhirServerUrl: "http://172.17.0.1:8091/fhir"
-  fhirServerUrl: ${FHIR_SERVER_URL}
+  fhirServerUrl: "${FHIR_SERVER_URL}"
   # dbConfig: "config/hapi-postgres-config_local.json"
-  dwhRootPrefix: "${DWH_ROOT_PREFIX:-/dwh/controller_DWH}"
+  dwhRootPrefix: "/dwh/controller_DWH"
   generateParquetFiles: true
-  incrementalSchedule: "0 0 * * * *"
-  purgeSchedule: "0 30 * * * *"
-  numOfDwhSnapshotsToRetain: 2
-  # There is no Questionnaire in our test FHIR server, but it is added to
-  # prevent regression of https://github.com/google/fhir-data-pipes/issues/785.
-  # TODO: add resource table creation to e2e tests.
+  incrementalSchedule: "${FHIR_DATA_PIPES_INCREMENTAL_SCHEDULE}"
+  purgeSchedule: "${FHIR_DATA_PIPES_PURGE_SCHEDULE}"
+  numOfDwhSnapshotsToRetain: ${FHIR_DATA_PIPES_NUM_OF_DWH_SNAPSHOTS_TO_RETAIN}
   resourceList: "${FHIR_RESOURCE_LIST}"
-  numThreads: ${NUM_THREADS}
-  autoGenerateFlinkConfiguration: ${AUTO_GENERATE_FLINK_CONFIG}
+  numThreads: -1
   createHiveResourceTables: false
+  autoGenerateFlinkConfiguration: false
   thriftserverHiveConfig: "config/thriftserver-hive-config_local.json"
-  hiveResourceViewsDir: "config/views"
+  hiveResourceViewsDir: "/views"
   # structureDefinitionsPath: "config/profile-definitions"
   structureDefinitionsPath: "classpath:/r4-us-core-definitions"
   fhirVersion: "R4"
   rowGroupSizeForParquetFiles: 33554432   # 32mb
-  viewDefinitionsDir: "config/views"
-  createParquetViews: false
+  viewDefinitionsDir: "/views"
+  createParquetViews: true
   sinkDbConfigPath: "config/hapi-postgres-config_local_views.json"
   #sinkFhirServerUrl: "http://sink-server:8080/fhir"
   #sinkUserName: "hapi"

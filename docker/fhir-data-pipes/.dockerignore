@@ -1,4 +1,5 @@
 dwh/
+views/
 *.md
 .git
 .gitignore
