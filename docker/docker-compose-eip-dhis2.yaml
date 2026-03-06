@@ -1,6 +1,6 @@
 services:
   artemis:
-    image: apache/activemq-artemis
+    image: apache/activemq-artemis:2.44.0
     environment:
       ARTEMIS_USERNAME: ${ARTEMIS_USERNAME:-artemis}
       ARTEMIS_PASSWORD: ${ARTEMIS_PASSWORD:-artemis}
@@ -19,8 +19,6 @@ services:
 
   eip-client:
     image: mekomsolutions/eip-client
-    env_file:
-      - .env
     environment:
       EIP_DHIS2_MAPPING_FILE: ${EIP_DHIS2_MAPPING_FILE:-/eip-client/config/dhis2-mappings.yml}
       # Disable Spring Boot Actuator HikariCP metrics to avoid version conflicts
@@ -42,13 +40,6 @@ services:
       - ${EIP_ANALYTICS_DHIS2_ROUTES_PATH}:/eip-client/routes
       - ${EIP_ANALYTICS_DHIS2_CONFIG_PATH}:/eip-client/config/dhis2-config.json:ro
       - ${EIP_HOME_DIR_HOST:-eip_analytics_dhis2_home}:/eip-home
-    depends_on:
-      postgresql:
-        condition: service_healthy
-      dhis2:
-        condition: service_healthy
-      artemis:
-        condition: service_started
     healthcheck:
       test: [ "CMD", "curl", "-f", "http://localhost:8080/actuator/health" ]
       interval: 30s
