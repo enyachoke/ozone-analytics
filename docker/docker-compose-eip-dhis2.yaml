@@ -1,0 +1,62 @@
+services:
+  artemis:
+    image: apache/activemq-artemis
+    environment:
+      ARTEMIS_USERNAME: ${ARTEMIS_USERNAME:-artemis}
+      ARTEMIS_PASSWORD: ${ARTEMIS_PASSWORD:-artemis}
+    ports:
+      - "${ARTEMIS_CONSOLE_PORT:-8161}:8161"
+      - "${ARTEMIS_BROKER_PORT:-61616}:61616"
+    networks:
+      - ozone-analytics
+    restart: unless-stopped
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8161" ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
+
+  eip-client:
+    image: mekomsolutions/eip-client
+    env_file:
+      - .env
+    environment:
+      EIP_DHIS2_MAPPING_FILE: ${EIP_DHIS2_MAPPING_FILE:-/eip-client/config/dhis2-mappings.yml}
+      # Disable Spring Boot Actuator HikariCP metrics to avoid version conflicts
+      SPRING_AUTOCONFIGURE_EXCLUDE: org.springframework.boot.actuate.autoconfigure.metrics.jdbc.DataSourcePoolMetricsAutoConfiguration
+      MANAGEMENT_METRICS_ENABLE_JVM: "false"
+      MANAGEMENT_METRICS_ENABLE_HIKARICP: "false"
+      # ActiveMQ Artemis configuration
+      ARTEMIS_BROKER_URL: tcp://artemis:61616
+      ARTEMIS_USERNAME: ${ARTEMIS_USERNAME:-artemis}
+      ARTEMIS_PASSWORD: ${ARTEMIS_PASSWORD:-artemis}
+      ARTEMIS_POOL_SIZE: ${ARTEMIS_POOL_SIZE:-10}
+      # DHIS2 Configuration
+      DHIS2_URL: ${DHIS2_URL}
+      DHIS2_USERNAME: ${DHIS2_USERNAME}
+      DHIS2_PASSWORD: ${DHIS2_PASSWORD}
+    ports:
+      - "${EIP_CLIENT_PORT:-8085}:8080"
+    volumes:
+      - ${EIP_ANALYTICS_DHIS2_ROUTES_PATH}:/eip-client/routes
+      - ${EIP_ANALYTICS_DHIS2_CONFIG_PATH}:/eip-client/config/dhis2-config.json:ro
+      - ${EIP_HOME_DIR_HOST:-eip_analytics_dhis2_home}:/eip-home
+    depends_on:
+      postgresql:
+        condition: service_healthy
+      dhis2:
+        condition: service_healthy
+      artemis:
+        condition: service_started
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8080/actuator/health" ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
+    networks:
+      - ozone-analytics
+    restart: unless-stopped
+volumes:
+  eip_analytics_dhis2_home:
