@@ -44,7 +44,7 @@ services:
       - "${EIP_CLIENT_PORT:-8085}:8080"
     volumes:
       - ${EIP_ANALYTICS_DHIS2_ROUTES_PATH}:/eip-client/routes
-      - ${EIP_ANALYTICS_DHIS2_CONFIG_PATH}:/eip-client/config/dhis2-config.json:ro
+      - ${EIP_ANALYTICS_DHIS2_CONFIG_PATH}:/eip-client/config
       - ${EIP_HOME_DIR_HOST:-eip_analytics_dhis2_home}:/eip-home
     depends_on:
       artemis:
