@@ -37,6 +37,9 @@ services:
       EIP_POSTGRESQL_JDBC_URL: ${EIP_POSTGRESQL_JDBC_URL:-jdbc:postgresql://postgresql:5432/analytics}
       EIP_POSTGRESQL_USERNAME: ${EIP_POSTGRESQL_USERNAME:-analytics}
       EIP_POSTGRESQL_PASSWORD: ${EIP_POSTGRESQL_PASSWORD:-password}
+      EIP_DHIS2_BASE_URL: ${EIP_DHIS2_BASE_URL:-http://dhis2:8080}
+      EIP_DHIS2_USERNAME: ${EIP_DHIS2_USERNAME:-admin}
+      EIP_DHIS2_PASSWORD: ${EIP_DHIS2_PASSWORD:-district}
     ports:
       - "${EIP_CLIENT_PORT:-8085}:8080"
     volumes:
