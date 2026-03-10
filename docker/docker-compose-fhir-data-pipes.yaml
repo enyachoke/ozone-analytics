@@ -47,5 +47,7 @@ services:
     depends_on:
       hapi-server:
         condition: service_started
+    extra_hosts:
+      - "fhir.openelis.org:${FHIR_OPENELIS_HOST:-172.17.0.1}"
 volumes:
   spark_vol_single:
