@@ -10,8 +10,9 @@ services:
     volumes:
       - ${DWH_ROOT}:/dwh
       - ${DWH_VIEWS_PATH:-./fhir-data-pipes/views}:/views
+      - ./trust-all-agent.jar:/app/trust-all-agent.jar
     environment:
-      - JAVA_OPTS=${JAVA_OPTS:-}
+      - JAVA_OPTS=${JAVA_OPTS:--javaagent:/app/trust-all-agent.jar}
       - FHIR_SERVER_URL=${FHIR_SERVER_URL:-http://hapi-server:8080/fhir}
       - DWH_ROOT_PREFIX=${DWH_ROOT_PREFIX:-/dwh/controller_DWH}
       - FHIR_RESOURCE_LIST=${FHIR_RESOURCE_LIST:-Patient,Observation,Practitioner,DiagnosticReport,ServiceRequest,Specimen,Task,Organization}

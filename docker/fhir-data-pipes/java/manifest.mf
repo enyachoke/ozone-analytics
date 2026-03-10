@@ -1,0 +1,3 @@
+Premain-Class: TrustAllAgent
+Can-Redefine-Classes: true
+
