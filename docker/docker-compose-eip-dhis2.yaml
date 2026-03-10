@@ -40,6 +40,7 @@ services:
       EIP_DHIS2_BASE_URL: ${EIP_DHIS2_BASE_URL:-http://dhis2:8080}
       EIP_DHIS2_USERNAME: ${EIP_DHIS2_USERNAME:-admin}
       EIP_DHIS2_PASSWORD: ${EIP_DHIS2_PASSWORD:-district}
+      TZ: ${TZ:-UTC}
     ports:
       - "${EIP_CLIENT_PORT:-8085}:8080"
     volumes:
