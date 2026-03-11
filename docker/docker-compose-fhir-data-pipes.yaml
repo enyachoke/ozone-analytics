@@ -13,6 +13,7 @@ services:
     environment:
       - JAVA_OPTS=${JAVA_OPTS:--javaagent:/app/trust-all-agent.jar}
       - FHIR_SERVER_URL=${FHIR_SERVER_URL:-http://hapi-server:8080/fhir}
+      - FHIR_SERVER_URL_TLS=${FHIR_SERVER_URL_TLS:-https://fhir.openelis.org:8443/fhir}
       - DWH_ROOT_PREFIX=${DWH_ROOT_PREFIX:-/dwh/controller_DWH}
       - FHIR_RESOURCE_LIST=${FHIR_RESOURCE_LIST:-Patient,Observation,Practitioner,DiagnosticReport,ServiceRequest,Specimen,Task,Organization}
       - NUM_THREADS=${NUM_THREADS:--1}
