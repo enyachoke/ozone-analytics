@@ -100,7 +100,16 @@ if [ "$IMPORT_FHIR_CERT" = "true" ] && [ -n "$FHIR_SERVER_URL_TLS" ]; then
     echo "[wrapper] Extracting cert from $tls_host_port"
     if openssl s_client -showcerts -connect "$tls_host_port" </dev/null 2>/dev/null | openssl x509 -outform PEM > /tmp/fhir_server.crt; then
         echo "[wrapper] Certificate fetched. Importing into Java Truststore..."
-        keytool -import -alias fhir_server_auto -keystore "$JAVA_HOME/lib/security/cacerts" \
+        keystore_path="${JAVA_HOME}/lib/security/cacerts"
+        alias_name="fhir_server_auto"
+
+        # Make this idempotent on restarts: replace existing alias if present.
+        if keytool -list -keystore "$keystore_path" -storepass changeit -alias "$alias_name" >/dev/null 2>&1; then
+          echo "[wrapper] Existing cert alias '$alias_name' found; replacing."
+          keytool -delete -alias "$alias_name" -keystore "$keystore_path" -storepass changeit
+        fi
+
+        keytool -import -trustcacerts -alias "$alias_name" -keystore "$keystore_path" \
                 -file /tmp/fhir_server.crt -storepass changeit -noprompt
         echo "[wrapper] Successfully imported certificate."
     else
